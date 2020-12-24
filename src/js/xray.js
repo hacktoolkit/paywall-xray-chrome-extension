@@ -1,6 +1,6 @@
 $(function() {
-    //const INTERVAL_MILLIS = 5000;  // default
-    const INTERVAL_MILLIS = 1000;  // every 1s - uncomment for testing only
+    const INTERVAL_MILLIS = 5000;  // default
+    //const INTERVAL_MILLIS = 1000;  // every 1s - uncomment for testing only
     let paywallGuardInterval = null;
     const LIMIT = 5;
     let ticks = 0;
