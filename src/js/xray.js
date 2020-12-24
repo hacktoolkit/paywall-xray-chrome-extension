@@ -1,34 +1,107 @@
 $(function() {
+    //const INTERVAL_MILLIS = 5000;  // default
+    const INTERVAL_MILLIS = 1000;  // every 1s - uncomment for testing only
     let paywallGuardInterval = null;
     const LIMIT = 5;
     let ticks = 0;
 
+
     function removePaywall() {
-        removePaywallNYT();
+        const location = window.location;
+        const hostname = location.hostname;
+
+        if (hostname.match(/^www\.businessinsider\.com$/)) {
+            removePaywallBusinessInsider();
+        } else if (hostname.match(/^www\.nytimes\.com$/)) {
+            removePaywallNYTimes();
+        }
     }
 
-    function removePaywallNYT() {
-        // NYTimes.com
-        $('div#in-story-masthead').remove();
-        $('div#google-one-tap-container').remove();
-        $('div.NYTAppHideMasthead').remove();
-        $('div#gateway-content').remove();
-        $('div#top-wrapper').remove();
-        $('div.ad').remove();
 
+    function removeBadDivs(badIds, badIdRegexes, badClassNames) {
         const divs = $('div');
         _.forEach(divs, function(div) {
             const elt = $(div);
             const id = elt.attr('id');
 
-            if (id) {
-                if (id.match(/^lire-ui.*$/) ||
-                    id.match(/^story-ad-\d+-wrapper$/)
-                   ) {
-                    elt.remove();
+            let shouldRemove = false;
+
+            if (!shouldRemove && id) {
+                // check against badIds
+                if (!shouldRemove) {
+                    _.forEach(badIds, function(badId) {
+                        shouldRemove = id === badId;
+
+                        // return false to terminate iteration early
+                        return !shouldRemove;
+                    });
+                }
+
+                // check against badIdRegexes
+                if (!shouldRemove) {
+                    _.forEach(badIdRegexes, function(badIdRegex) {
+                        shouldRemove = !!(id.match(badIdRegex));
+
+                        // return false to terminate iteration early
+                        return !shouldRemove;
+                    });
                 }
             }
+
+            if (!shouldRemove) {
+                // check against badClassNames
+                _.forEach(badClassNames, function(badClassName) {
+                    shouldRemove = elt.hasClass(badClassName);
+
+                    // return false to terminate iteration early
+                    return !shouldRemove;
+                });
+            }
+
+            if (shouldRemove) {
+                elt.remove();
+            }
         });
+    }
+
+
+    function removePaywallBusinessInsider() {
+        const badIds = [
+            'checkout-container'
+        ];
+        const badIdRegexes = [];
+        const badClassNames = [
+            'tp-modal'
+        ];
+
+        removeBadDivs(badIds, badIdRegexes, badClassNames);
+
+        // replace the entire body's content with just the article
+
+        const article = $('article');
+        const articleContent = $('div#piano-inline-content-wrapper').css({
+            display: 'block'
+        });
+    }
+
+
+    function removePaywallNYTimes() {
+        const badIds = [
+            'gateway-content',
+            'google-one-tap-container',
+            'in-story-masthead',
+            'top-wrapper'
+        ];
+        const badIdRegexes = [
+            /^lire-ui.*$/,
+            /^story-ad-\d+-wrapper$/
+        ];
+        const badClassNames = [
+            'ad',
+            'NYTAppHideMasthead'
+        ];
+
+        removeBadDivs(badIds, badIdRegexes, badClassNames);
 
         // replace the entire app's content with just the article
         const article = $('article#story');
@@ -45,7 +118,7 @@ $(function() {
         } else {
             removePaywall();
         }
-        ++tick;
+        ++ticks;
     }
 
 
@@ -54,9 +127,9 @@ $(function() {
 
 
     function init() {
-        //$('script[type*=javascript]').remove();
-        paywallGuardInterval = setInterval(onTick, 5000);
+        // attempt to remove immediately upon load, and then periodically
         removePaywall();
+        paywallGuardInterval = setInterval(onTick, INTERVAL_MILLIS);
     }
 
 
