@@ -19,6 +19,9 @@ See: https://developer.chrome.com/webstore/publish
 
 Contributions are welcome. Please fork the repository and submit a pull request from your local branch.
 
+## Support
+
+Check out <a href="https://github.com/hacktoolkit/chrome-extensions">other Chrome extensions</a> made by Hacktoolkit!
 
 ## License
 
