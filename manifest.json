@@ -20,7 +20,8 @@
         {
           "matches": [
             "https://www.nytimes.com/*",
-            "https://www.businessinsider.com/*"
+            "https://www.businessinsider.com/*",
+            "https://www.theepochtimes.com/*"
           ],
             "css": [],
             "js": [
