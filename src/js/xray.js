@@ -105,6 +105,21 @@ $(function() {
                 $('html').removeClass('js-focus-visible');
             }
         },
+        'www.wired.com': {
+            badIds: [],
+            badIdRegexes: [],
+            badClassNames: [
+                'ad',
+                'dfp-unit--paywall-modal-full-barrier'
+            ],
+            badElementSelectors: [],
+            preArticleExtractor: function() {
+            },
+            articleExtractor: function() {
+            },
+            tickIntervalMillis: 5000,
+            tickLimit: 5
+        },
         'www.wsj.com': {
             badIds: [
                 'cx-what-to-read-next',
