@@ -20,6 +20,32 @@ $(function() {
             tickIntervalMillis: 5000,
             tickLimit: 5
         },
+        'fortune.com': {
+            badIds: [
+                'article_overlay'
+            ],
+            badIdRegexes: [],
+            badClassNames: [
+                'tp-container-inner'
+            ],
+            badElementSelectors: [],
+            preArticleExtractor: function() {
+                if (!extractedContent) {
+                    const contentElt = $('div#instream-content-0');
+                    if (contentElt) {
+                        extractedContent = contentElt.html();
+                        $('div#instream-content-0').html(extractedContent);
+                    }
+                }
+            },
+            articleExtractor: function() {
+                if (extractedContent) {
+                    $('div#instream-content-0').html(extractedContent);
+                }
+            },
+            tickIntervalMillis: 5000,
+            tickLimit: 5
+        },
         'www.businessinsider.com': {
             badIds: [
                 'checkout-container'

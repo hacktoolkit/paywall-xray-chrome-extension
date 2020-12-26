@@ -19,8 +19,9 @@
     "content_scripts": [
         {
           "matches": [
-            "https://www.nytimes.com/*",
+            "https://fortune.com/*",
             "https://www.businessinsider.com/*",
+            "https://www.nytimes.com/*",
             "https://www.theepochtimes.com/*",
             "https://www.wired.com/*",
             "https://www.wsj.com/*"
