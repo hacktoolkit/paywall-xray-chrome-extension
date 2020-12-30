@@ -89,10 +89,18 @@ $(function() {
             preArticleExtractor: function() {
             },
             articleExtractor: function() {
-                // replace the entire app's content with just the article
-                const article = $('article#story');
                 const app = $('div#app');
-                app.html(article);
+                const article = $('article#story');
+                const content = $('main#site-content');
+                const isArticle = article.length > 0;
+                const isContent = content.length > 0;
+
+                // replace the entire app's content with just the article
+                if (isArticle) {
+                    app.html(article);
+                } else if (isContent) {
+                    app.html(content);
+                }
             }
         },
         'www.theepochtimes.com': {
