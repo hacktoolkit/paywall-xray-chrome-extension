@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
     const DEFAULT_INTERVAL_MILLIS = 2000;
     const DEFAULT_TICK_LIMIT = 10;
 
@@ -6,30 +6,23 @@ $(function() {
     let ticks = 0;
     let extractedContent = null;
 
-
     const XRAY_CONFIGS = {
         'abc.template': {
             badIds: [],
             badIdRegexes: [],
             badClassNames: [],
             badElementSelectors: [],
-            preArticleExtractor: function() {
-            },
-            articleExtractor: function() {
-            },
+            preArticleExtractor: function () {},
+            articleExtractor: function () {},
             tickIntervalMillis: 5000,
-            tickLimit: 5
+            tickLimit: 5,
         },
         'fortune.com': {
-            badIds: [
-                'article_overlay'
-            ],
+            badIds: ['article_overlay'],
             badIdRegexes: [],
-            badClassNames: [
-                'tp-container-inner'
-            ],
+            badClassNames: ['tp-container-inner'],
             badElementSelectors: [],
-            preArticleExtractor: function() {
+            preArticleExtractor: function () {
                 if (!extractedContent) {
                     const contentElt = $('div#instream-content-0');
                     if (contentElt) {
@@ -38,57 +31,43 @@ $(function() {
                     }
                 }
             },
-            articleExtractor: function() {
+            articleExtractor: function () {
                 if (extractedContent) {
                     $('div#instream-content-0').html(extractedContent);
                 }
             },
             tickIntervalMillis: 5000,
-            tickLimit: 5
+            tickLimit: 5,
         },
         'www.businessinsider.com': {
-            badIds: [
-                'checkout-container'
-            ],
+            badIds: ['checkout-container'],
             badIdRegexes: [],
-            badClassNames: [
-                'tp-backdrop',
-                'tp-modal'
-            ],
-            badElementSelectors: [
-                'aside#l-rightrail',
-                'h4.piano-freemium'
-            ],
-            preArticleExtractor: function() {
-            },
-            articleExtractor: function() {
+            badClassNames: ['tp-backdrop', 'tp-modal'],
+            badElementSelectors: ['aside#l-rightrail', 'h4.piano-freemium'],
+            preArticleExtractor: function () {},
+            articleExtractor: function () {
                 // replace the entire body's content with just the article
                 const article = $('article');
-                const articleContent = $('div#piano-inline-content-wrapper').css({
-                    display: 'block'
+                const articleContent = $(
+                    'div#piano-inline-content-wrapper'
+                ).css({
+                    display: 'block',
                 });
                 $('body').removeClass('tp-modal-open');
-            }
+            },
         },
         'www.nytimes.com': {
             badIds: [
                 'gateway-content',
                 'google-one-tap-container',
                 'in-story-masthead',
-                'top-wrapper'
+                'top-wrapper',
             ],
-            badIdRegexes: [
-                /^lire-ui.*$/,
-                /^story-ad-\d+-wrapper$/
-            ],
-            badClassNames: [
-                'ad',
-                'NYTAppHideMasthead'
-            ],
+            badIdRegexes: [/^lire-ui.*$/, /^story-ad-\d+-wrapper$/],
+            badClassNames: ['ad', 'NYTAppHideMasthead'],
             badElementSelectors: [],
-            preArticleExtractor: function() {
-            },
-            articleExtractor: function() {
+            preArticleExtractor: function () {},
+            articleExtractor: function () {
                 const app = $('div#app');
                 const article = $('article#story');
                 const content = $('main#site-content');
@@ -101,23 +80,55 @@ $(function() {
                 } else if (isContent) {
                     app.html(content);
                 }
-            }
+            },
+        },
+        'www.ocregister.com': {
+            badIds: [
+                'registration__wrapper',
+                'registrationWall',
+                'stick-trigger',
+            ],
+            badIdRegexes: [],
+            badClassNames: [
+                'hide-on-success',
+                'modal-scrollable',
+                'connext-modal-backdrop',
+                'sidebar-content',
+                'header-banners',
+                'sign-up-follow',
+            ],
+            badElementSelectors: [],
+            preArticleExtractor: function () {
+                if (!extractedContent) {
+                    const contentElt = $('div.article-body');
+                    if (contentElt) {
+                        extractedContent = contentElt.html();
+                        $('div.article-body').html(extractedContent);
+                    }
+                }
+            },
+            articleExtractor: function () {
+                if (extractedContent) {
+                    $('div.article-body').html(extractedContent);
+                }
+                $('body').removeClass('modal-open');
+            },
+            tickIntervalMillis: 5000,
+            tickLimit: 5,
         },
         'www.theepochtimes.com': {
             badIds: [],
-            badIdRegexes: [
-                /^ad_.*$/
-            ],
+            badIdRegexes: [/^ad_.*$/],
             badClassNames: [
                 'bottom_recm',
                 'fade-out',
                 'meter_container',
                 'meter_expired',
                 'tool_box',
-                'top_ad'
+                'top_ad',
             ],
             badElementSelectors: [],
-            preArticleExtractor: function() {
+            preArticleExtractor: function () {
                 if (!extractedContent) {
                     const contentElt = $('div.post_content');
                     if (contentElt) {
@@ -127,61 +138,52 @@ $(function() {
                 }
                 $('html').removeClass('js-focus-visible');
             },
-            articleExtractor: function() {
+            articleExtractor: function () {
                 if (extractedContent) {
                     $('div.post_content').html(extractedContent);
                 }
                 $('div.one_post').css({
-                    overflow: 'scroll',  // paywall: 'hidden'
+                    overflow: 'scroll', // paywall: 'hidden'
                     height: '', // paywall: 673px
-                    maxWidth: 1250  // paywall: 1200px
+                    maxWidth: 1250, // paywall: 1200px
                 });
                 $('html').removeClass('js-focus-visible');
-            }
+            },
         },
         'www.wired.com': {
             badIds: [],
             badIdRegexes: [],
-            badClassNames: [
-                'ad',
-                'dfp-unit--paywall-modal-full-barrier'
-            ],
+            badClassNames: ['ad', 'dfp-unit--paywall-modal-full-barrier'],
             badElementSelectors: [],
-            preArticleExtractor: function() {
-            },
-            articleExtractor: function() {
-            },
+            preArticleExtractor: function () {},
+            articleExtractor: function () {},
             tickIntervalMillis: 5000,
-            tickLimit: 5
+            tickLimit: 5,
         },
         'www.wsj.com': {
-            badIds: [
-                'cx-what-to-read-next',
-                'smartmatch-main'
-            ],
-            badIdRegexes: [
-                /^cx-.*$/,
-                /^smartmatch-.*$/
-            ],
+            badIds: ['cx-what-to-read-next', 'smartmatch-main'],
+            badIdRegexes: [/^cx-.*$/, /^smartmatch-.*$/],
             badClassNames: [
                 'GoogleActiveViewInnerContainer',
                 'banner-ad-b',
                 'immersive-snippet-rail-ad',
-                'snippet-promotion'
+                'snippet-promotion',
             ],
             badElementSelectors: [],
-            preArticleExtractor: function() {
-            },
-            articleExtractor: function() {
-                $('main div.column').removeClass('column at-col-8 at12-col7 at16-col9 at16-offset2 at12-offset1');
+            preArticleExtractor: function () {},
+            articleExtractor: function () {
+                $('main div.column').removeClass(
+                    'column at-col-8 at12-col7 at16-col9 at16-offset2 at12-offset1'
+                );
                 // swap out the CSS class in order to remove the faded-out look applied to the pseudo-element :after
-                $('.wsj-snippet-body').addClass('wsj-snippet-nofade').removeClass('wsj-snippet-body');
+                $('.wsj-snippet-body')
+                    .addClass('wsj-snippet-nofade')
+                    .removeClass('wsj-snippet-body');
             },
             tickIntervalMillis: 2000,
-            tickLimit: 20
+            tickLimit: 20,
         },
     };
-
 
     function activatePaywallXray() {
         const location = window.location;
@@ -189,11 +191,12 @@ $(function() {
 
         const xrayConfig = XRAY_CONFIGS[hostname];
 
-        if (typeof(xrayConfig) !== 'undefined') {
+        if (typeof xrayConfig !== 'undefined') {
             // attempt to execute immediately upon load, and then periodically
             runXray(xrayConfig);
 
-            const tickIntervalMillis = xrayConfig.tickIntervalMillis || DEFAULT_INTERVAL_MILLIS;
+            const tickIntervalMillis =
+                xrayConfig.tickIntervalMillis || DEFAULT_INTERVAL_MILLIS;
 
             paywallXrayInterval = setInterval(
                 makeXrayTicker(xrayConfig),
@@ -202,16 +205,14 @@ $(function() {
         }
     }
 
-
     function runXray(xrayConfig) {
         xrayConfig.preArticleExtractor();
         removeBadElements(xrayConfig);
         xrayConfig.articleExtractor();
     }
 
-
     function makeXrayTicker(xrayConfig) {
-        const callback = function()  {
+        const callback = function () {
             console.log('Paywall X-ray Extension is loaded');
             const limit = xrayConfig.tickLimit || DEFAULT_TICK_LIMIT;
 
@@ -221,23 +222,21 @@ $(function() {
                 runXray(xrayConfig);
             }
             ++ticks;
-        }
+        };
         return callback;
     }
-
 
     function removeBadElements(xrayConfig) {
         removeBadDivs(xrayConfig);
 
-        _.forEach(xrayConfig.badElementSelectors, function(selector) {
+        _.forEach(xrayConfig.badElementSelectors, function (selector) {
             $(selector).remove();
         });
     }
 
-
     function removeBadDivs(xrayConfig) {
         const divs = $('div');
-        _.forEach(divs, function(div) {
+        _.forEach(divs, function (div) {
             const elt = $(div);
             const id = elt.attr('id');
 
@@ -246,7 +245,7 @@ $(function() {
             if (!shouldRemove && id) {
                 // check against badIds
                 if (!shouldRemove) {
-                    _.forEach(xrayConfig.badIds, function(badId) {
+                    _.forEach(xrayConfig.badIds, function (badId) {
                         shouldRemove = id === badId;
 
                         // return false to terminate iteration early
@@ -256,8 +255,8 @@ $(function() {
 
                 // check against badIdRegexes
                 if (!shouldRemove) {
-                    _.forEach(xrayConfig.badIdRegexes, function(badIdRegex) {
-                        shouldRemove = !!(id.match(badIdRegex));
+                    _.forEach(xrayConfig.badIdRegexes, function (badIdRegex) {
+                        shouldRemove = !!id.match(badIdRegex);
 
                         // return false to terminate iteration early
                         return !shouldRemove;
@@ -267,7 +266,7 @@ $(function() {
 
             if (!shouldRemove) {
                 // check against badClassNames
-                _.forEach(xrayConfig.badClassNames, function(badClassName) {
+                _.forEach(xrayConfig.badClassNames, function (badClassName) {
                     shouldRemove = elt.hasClass(badClassName);
 
                     // return false to terminate iteration early
@@ -281,15 +280,11 @@ $(function() {
         });
     }
 
-
-    function initEventHandlers() {
-    }
-
+    function initEventHandlers() {}
 
     function init() {
         activatePaywallXray();
     }
-
 
     initEventHandlers();
     init();
