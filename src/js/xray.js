@@ -56,6 +56,28 @@ $(function () {
                 $('body').removeClass('tp-modal-open');
             },
         },
+        'www.economist.com': {
+            badIds: ['layout-article-regwall'],
+            badIdRegexes: [/^tp-regwall$/],
+            badClassNames: [],
+            badElementSelectors: [],
+            preArticleExtractor: function () {
+                if (!extractedContent) {
+                    const contentElt = $('article.article');
+                    if (contentElt) {
+                        extractedContent = contentElt.html();
+                        $('article.article').html(extractedContent);
+                    }
+                }
+            },
+            articleExtractor: function () {
+                if (extractedContent) {
+                    $('article.article').html(extractedContent);
+                }
+            },
+            tickIntervalMillis: 5000,
+            tickLimit: 5,
+        },
         'www.nytimes.com': {
             badIds: [
                 'gateway-content',
