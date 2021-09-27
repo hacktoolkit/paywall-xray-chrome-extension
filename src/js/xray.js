@@ -144,6 +144,7 @@ $(function () {
             badClassNames: [
                 'bottom_recm',
                 'fade-out',
+                'main-wrapper',
                 'meter_container',
                 'meter_expired',
                 'tool_box',
@@ -164,13 +165,19 @@ $(function () {
                 if (extractedContent) {
                     $('div.post_content').html(extractedContent);
                 }
-                $('div.one_post').css({
+                var unsetScrollBlockerCfg = {
                     overflow: 'scroll', // paywall: 'hidden'
                     height: '', // paywall: 673px
                     maxWidth: 1250, // paywall: 1200px
+                };
+                var scrollBlockerElts = ['div.one_post', 'main#main'];
+                _.forEach(scrollBlockerElts, function (elt) {
+                    $(elt).css(unsetScrollBlockerCfg);
                 });
                 $('html').removeClass('js-focus-visible');
             },
+            tickIntervalMillis: 5000,
+            tickLimit: 5,
         },
         'www.wired.com': {
             badIds: [],
