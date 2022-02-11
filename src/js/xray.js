@@ -42,7 +42,7 @@ $(function () {
         'www.businessinsider.com': {
             badIds: ['checkout-container'],
             badIdRegexes: [],
-            badClassNames: ['tp-backdrop', 'tp-modal'],
+            badClassNames: ['back-to-home', 'tp-backdrop', 'tp-modal'],
             badElementSelectors: ['aside#l-rightrail', 'h4.piano-freemium'],
             preArticleExtractor: function () {},
             articleExtractor: function () {
