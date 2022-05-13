@@ -179,6 +179,16 @@ $(function () {
             tickIntervalMillis: 5000,
             tickLimit: 5,
         },
+        'www.washingtonpost.com': {
+            badIds: [],
+            badIdRegexes: [/^paywall-.*$/, /^softwall-.*$/],
+            badClassNames: [],
+            badElementSelectors: [],
+            preArticleExtractor: function () {},
+            articleExtractor: function () {},
+            tickIntervalMillis: 5000,
+            tickLimit: 5,
+        },
         'www.wired.com': {
             badIds: [],
             badIdRegexes: [],
