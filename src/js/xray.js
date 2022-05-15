@@ -78,6 +78,33 @@ $(function () {
             tickIntervalMillis: 5000,
             tickLimit: 5,
         },
+        'www.flexpackmag.com': {
+            badIds: ['metered-message', 'metered_notice'],
+            badIdRegexes: [],
+            badClassNames: [
+                'article-preview-banner',
+                'article-subscription-banner-free',
+            ],
+            badElementSelectors: [],
+            preArticleExtractor: function () {
+                if (!extractedContent) {
+                    const contentElt = $('.page-article-show');
+                    if (contentElt) {
+                        extractedContent = contentElt.html();
+                        $('article.main-body').html(extractedContent);
+                    }
+                }
+            },
+            articleExtractor: function () {
+                if (extractedContent) {
+                    $('article.main-body').html(extractedContent);
+                    $('artlcle.main-body').removeClass('page-article-teaser');
+                    $('artlcle.main-body').addClass('page-article-show');
+                }
+            },
+            tickIntervalMillis: 5000,
+            tickLimit: 5,
+        },
         'www.nytimes.com': {
             badIds: [
                 'gateway-content',
