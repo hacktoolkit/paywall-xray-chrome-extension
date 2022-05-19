@@ -2,7 +2,7 @@
     "manifest_version": 2,
 
     "name": "Paywall X-ray",
-    "version": "0.0.4",
+    "version": "0.0.5",
 
     "description": "Reads content behind fake paywalls.",
 
@@ -23,6 +23,7 @@
             "https://www.businessinsider.com/*",
             "https://www.economist.com/*",
             "https://www.flexpackmag.com/*",
+            "https://www.law360.com/*",
             "https://www.nytimes.com/*",
             "https://www.ocregister.com/*",
             "https://www.theepochtimes.com/*",

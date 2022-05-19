@@ -12,6 +12,8 @@ $(function () {
             badIdRegexes: [],
             badClassNames: [],
             badElementSelectors: [],
+            obfuscatingIds: [],
+            obfuscatingClassNames: [],
             preArticleExtractor: function () {},
             articleExtractor: function () {},
             tickIntervalMillis: 5000,
@@ -101,6 +103,36 @@ $(function () {
                     $('artlcle.main-body').removeClass('page-article-teaser');
                     $('artlcle.main-body').addClass('page-article-show');
                 }
+            },
+            tickIntervalMillis: 5000,
+            tickLimit: 5,
+        },
+        'www.law360.com': {
+            badIds: ['NewsletterModal', 'FreeTrialModal'],
+            badIdRegexes: [],
+            badClassNames: ['modal-backdrop'],
+            badElementSelectors: [],
+            obfuscatingIds: ['teaser'],
+            obfuscatingClassNames: [
+                'fade1',
+                'fade2',
+                'fade3',
+                'fade4',
+                'fade5',
+            ],
+            preArticleExtractor: function () {},
+            articleExtractor: function () {
+                const articleBody = $('#article-body');
+                articleBody.css({
+                    '-moz-user-select': null,
+                    '-webkit-user-select': null,
+                    '-ms-user-select': null,
+                    'user-select': null,
+                    '-o-user-select': null,
+                });
+                articleBody.attr('unselectable', null);
+                articleBody.attr('onselectstart', null);
+                articleBody.attr('onmousedown', null);
             },
             tickIntervalMillis: 5000,
             tickLimit: 5,
@@ -274,6 +306,7 @@ $(function () {
     function runXray(xrayConfig) {
         xrayConfig.preArticleExtractor();
         removeBadElements(xrayConfig);
+        stripObfuscatingStyles(xrayConfig);
         xrayConfig.articleExtractor();
     }
 
@@ -343,6 +376,17 @@ $(function () {
             if (shouldRemove) {
                 elt.remove();
             }
+        });
+    }
+
+    function stripObfuscatingStyles(xrayConfig) {
+        _.forEach(xrayConfig.obfuscatingIds, function (id) {
+            const elt = $('#' + id);
+            elt.attr('id', '');
+        });
+
+        _.forEach(xrayConfig.obfuscatingClassNames, function (className) {
+            $('.' + className).removeClass(className);
         });
     }
 
