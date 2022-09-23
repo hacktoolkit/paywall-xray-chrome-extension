@@ -37,6 +37,13 @@ $(function () {
                 if (extractedContent) {
                     $('div#instream-content-0').html(extractedContent);
                 }
+                // <div class="paywall paywallActive" style="filter: grayscale(0.5) blur(10px); z-index: -1; pointer-events: none; user-select: none;">
+                $('.paywall').removeClass('paywallActive').css({
+                    filter: '',
+                    pointerEvents: '',
+                    userSelect: '',
+                    zIndex: '',
+                });
             },
             tickIntervalMillis: 5000,
             tickLimit: 5,
