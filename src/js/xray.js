@@ -248,10 +248,15 @@ $(function () {
         'www.washingtonpost.com': {
             badIds: [],
             badIdRegexes: [/^paywall-.*$/, /^softwall-.*$/],
-            badClassNames: [],
+            badClassNames: ['hide-for-print', 'center'],
             badElementSelectors: [],
             preArticleExtractor: function () {},
-            articleExtractor: function () {},
+            articleExtractor: function () {
+                const mainContainer = $('#__next');
+                mainContainer.css({
+                    position: 'inherit',
+                });
+            },
             tickIntervalMillis: 5000,
             tickLimit: 5,
         },
