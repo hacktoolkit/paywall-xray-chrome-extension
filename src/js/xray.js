@@ -48,6 +48,18 @@ $(function () {
             tickIntervalMillis: 5000,
             tickLimit: 5,
         },
+        'platformer.news': {
+            badIds: [],
+            badIdRegexes: [],
+            badClassNames: ['modal', 'subscribe-dialog'],
+            badElementSelectors: [],
+            obfuscatingIds: [],
+            obfuscatingClassNames: [],
+            preArticleExtractor: function () {},
+            articleExtractor: function () {},
+            tickIntervalMillis: 5000,
+            tickLimit: 5,
+        },
         'www.businessinsider.com': {
             badIds: ['checkout-container'],
             badIdRegexes: [],
