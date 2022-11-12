@@ -11,9 +11,11 @@ $(function () {
             badIds: [],
             badIdRegexes: [],
             badClassNames: [],
+            badClassRegexes: [],
             badElementSelectors: [],
             obfuscatingIds: [],
             obfuscatingClassNames: [],
+            obfuscatingClassRegexes: [],
             preArticleExtractor: function () {},
             articleExtractor: function () {},
             tickIntervalMillis: 5000,
@@ -23,6 +25,7 @@ $(function () {
             badIds: ['article_overlay'],
             badIdRegexes: [],
             badClassNames: ['tp-container-inner'],
+            badClassRegexes: [],
             badElementSelectors: [],
             preArticleExtractor: function () {
                 if (!extractedContent) {
@@ -55,6 +58,23 @@ $(function () {
             badElementSelectors: [],
             obfuscatingIds: [],
             obfuscatingClassNames: [],
+            obfuscatingClassRegexes: [],
+            preArticleExtractor: function () {},
+            articleExtractor: function () {},
+            tickIntervalMillis: 5000,
+            tickLimit: 5,
+        },
+        'www.bloomberg.com': {
+            badIds: ['expandableBanner'],
+            badIdRegexes: [],
+            badClassNames: [],
+            badClassRegexes: [],
+            badElementSelectors: [],
+            obfuscatingIds: [],
+            obfuscatingClassNames: [],
+            obfuscatingClassRegexes: [
+                /^nearly-transparent-text-blur__[a-f0-9]+$/,
+            ],
             preArticleExtractor: function () {},
             articleExtractor: function () {},
             tickIntervalMillis: 5000,
@@ -64,6 +84,7 @@ $(function () {
             badIds: ['checkout-container'],
             badIdRegexes: [],
             badClassNames: ['back-to-home', 'tp-backdrop', 'tp-modal'],
+            badClassRegexes: [],
             badElementSelectors: ['aside#l-rightrail', 'h4.piano-freemium'],
             preArticleExtractor: function () {},
             articleExtractor: function () {
@@ -81,6 +102,7 @@ $(function () {
             badIds: ['layout-article-regwall'],
             badIdRegexes: [/^tp-regwall$/],
             badClassNames: [],
+            badClassRegexes: [],
             badElementSelectors: [],
             preArticleExtractor: function () {
                 if (!extractedContent) {
@@ -106,6 +128,7 @@ $(function () {
                 'article-preview-banner',
                 'article-subscription-banner-free',
             ],
+            badClassRegexes: [],
             badElementSelectors: [],
             preArticleExtractor: function () {
                 if (!extractedContent) {
@@ -130,6 +153,7 @@ $(function () {
             badIds: ['NewsletterModal', 'FreeTrialModal'],
             badIdRegexes: [],
             badClassNames: ['modal-backdrop'],
+            badClassRegexes: [],
             badElementSelectors: [],
             obfuscatingIds: ['teaser'],
             obfuscatingClassNames: [
@@ -139,6 +163,7 @@ $(function () {
                 'fade4',
                 'fade5',
             ],
+            obfuscatingClassRegexes: [],
             preArticleExtractor: function () {},
             articleExtractor: function () {
                 const articleBody = $('#article-body');
@@ -164,6 +189,7 @@ $(function () {
                 'top-wrapper',
             ],
             badIdRegexes: [/^lire-ui.*$/, /^story-ad-\d+-wrapper$/],
+            badClassRegexes: [],
             badClassNames: ['ad', 'NYTAppHideMasthead'],
             badElementSelectors: [],
             preArticleExtractor: function () {},
@@ -197,6 +223,7 @@ $(function () {
                 'header-banners',
                 'sign-up-follow',
             ],
+            badClassRegexes: [],
             badElementSelectors: [],
             preArticleExtractor: function () {
                 if (!extractedContent) {
@@ -228,6 +255,7 @@ $(function () {
                 'tool_box',
                 'top_ad',
             ],
+            badClassRegexes: [],
             badElementSelectors: [],
             preArticleExtractor: function () {
                 if (!extractedContent) {
@@ -261,6 +289,7 @@ $(function () {
             badIds: [],
             badIdRegexes: [/^paywall-.*$/, /^softwall-.*$/],
             badClassNames: ['hide-for-print', 'center'],
+            badClassRegexes: [],
             badElementSelectors: [],
             preArticleExtractor: function () {},
             articleExtractor: function () {
@@ -276,6 +305,7 @@ $(function () {
             badIds: [],
             badIdRegexes: [],
             badClassNames: ['ad', 'dfp-unit--paywall-modal-full-barrier'],
+            badClassRegexes: [],
             badElementSelectors: [],
             preArticleExtractor: function () {},
             articleExtractor: function () {},
@@ -291,6 +321,7 @@ $(function () {
                 'immersive-snippet-rail-ad',
                 'snippet-promotion',
             ],
+            badClassRegexes: [],
             badElementSelectors: [],
             preArticleExtractor: function () {},
             articleExtractor: function () {
@@ -397,6 +428,24 @@ $(function () {
                 });
             }
 
+            if (!shouldRemove) {
+                // check against obfuscatingClassRegexes
+                const classes = (elt.attr('class') || '').split(/\s+/);
+                _.forEach(classes, function (className) {
+                    _.forEach(
+                        xrayConfig.badClassRegexes,
+                        function (badClassRegex) {
+                            if (className.match(badClassRegex)) {
+                                shouldRemove = true;
+
+                                // return false to terminate iteration early
+                                return !shouldRemove;
+                            }
+                        }
+                    );
+                });
+            }
+
             if (shouldRemove) {
                 elt.remove();
             }
@@ -411,6 +460,22 @@ $(function () {
 
         _.forEach(xrayConfig.obfuscatingClassNames, function (className) {
             $('.' + className).removeClass(className);
+        });
+
+        const divs = $('div');
+        _.forEach(divs, function (div) {
+            const elt = $(div);
+            const classes = (elt.attr('class') || '').split(/\s+/);
+            _.forEach(classes, function (className) {
+                _.forEach(
+                    xrayConfig.obfuscatingClassRegexes,
+                    function (obfuscatingClassRegex) {
+                        if (className.match(obfuscatingClassRegex)) {
+                            elt.removeClass(className);
+                        }
+                    }
+                );
+            });
         });
     }
 
