@@ -2,7 +2,7 @@
     "manifest_version": 3,
 
     "name": "Paywall X-ray",
-    "version": "0.3.0",
+    "version": "0.4.0",
 
     "description": "Reads content behind fake paywalls.",
 
@@ -21,6 +21,7 @@
           "matches": [
             "https://fortune.com/*",
             "https://platformer.news/*",
+            "https://www.bbc.com/*",
             "https://www.bloomberg.com/*",
             "https://www.businessinsider.com/*",
             "https://www.economist.com/*",
