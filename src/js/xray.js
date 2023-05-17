@@ -330,7 +330,7 @@ $(function () {
         'www.washingtonpost.com': {
             badIds: [],
             badIdRegexes: [/^paywall-.*$/, /^softwall-.*$/],
-            badClassNames: ['hide-for-print', 'center'],
+            badClassNames: ['hide-for-print', 'center', 'regwall-overlay'],
             badClassRegexes: [],
             badElementSelectors: [],
             preArticleExtractor: function () {},
@@ -338,6 +338,9 @@ $(function () {
                 const mainContainer = $('#__next');
                 mainContainer.css({
                     position: 'inherit',
+                });
+                $('body').css({
+                    overflow: 'scroll',
                 });
             },
             tickIntervalMillis: 5000,
