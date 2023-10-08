@@ -313,6 +313,27 @@ $(function () {
             tickIntervalMillis: 5000,
             tickLimit: 5,
         },
+        'www.thetimes.co.uk': {
+            badIds: [
+                'paywall-portal-page-footer',
+                'returning-user-subscription-offer',
+            ],
+            badIdRegexes: [],
+            badClassNames: [],
+            badClassRegexes: [],
+            badElementSelectors: [],
+            obfuscatingIds: [],
+            obfuscatingClassNames: [],
+            obfuscatingClassRegexes: [],
+            preArticleExtractor: function () {},
+            articleExtractor: function () {
+                $('body').css({
+                    overflow: 'scroll',
+                });
+            },
+            tickIntervalMillis: 5000,
+            tickLimit: 5,
+        },
         'www.smh.com.au': {
             badIds: ['soft-reg-wall-piano-id'],
             badIdRegexes: [],

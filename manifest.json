@@ -2,7 +2,7 @@
     "manifest_version": 3,
 
     "name": "Paywall X-ray",
-    "version": "0.6.0",
+    "version": "0.7.0",
 
     "description": "Reads content behind fake paywalls.",
 
@@ -31,6 +31,7 @@
             "https://www.nytimes.com/*",
             "https://www.ocregister.com/*",
             "https://www.theepochtimes.com/*",
+            "https://www.thetimes.co.uk/*",
             "https://www.smh.com.au/*",
             "https://www.washingtonpost.com/*",
             "https://www.wired.com/*",
